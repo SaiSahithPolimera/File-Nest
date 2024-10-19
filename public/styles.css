@@ -1,0 +1,166 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  border: none;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+  
+}
+
+#root,
+#__next {
+  isolation: isolate;
+}
+
+:root {
+  --custom-button-color: #760cd8;
+  --custom-button-padding: 8px 8px;
+  --custom-rounded-borders: 14px;
+  --custom-input-padding: 14px 12px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+.home {
+  background: #0c0a09;
+  padding: 12px 50px;
+  color: white;
+  display: grid;
+  grid-template-rows: 1fr 10fr;
+  min-height: 100vh;
+}
+
+.home nav {
+  display: flex;
+  justify-content: space-between;
+  backdrop-filter: blur(10px);
+}
+
+.home nav ul {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  list-style: none;
+}
+
+.home li:hover {
+  cursor: pointer;
+}
+
+.home nav h1 {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.home main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+  align-self: center;
+  justify-content: center;
+}
+
+p {
+  text-align: center;
+}
+
+.home main button, .sign-up button {
+  background: var(--custom-button-color);
+  padding: var(--custom-button-padding);
+  color: white;
+  border-radius: var(--custom-rounded-borders);
+}
+
+button:hover {
+  cursor: pointer;
+  background: var(--custom-button-color);
+  opacity: 0.9;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+}
+
+button a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.sign-up {
+  background: #0c0a09;
+  padding: 12px 50px;
+  color: white;
+  display: grid;
+  grid-template-rows: 1fr 10fr;
+  min-height: 100vh;
+}
+
+
+input {
+  padding: var(--custom-input-padding);
+  border-radius: var(--custom-rounded-borders);
+  border: none;
+}
+
+input:focus {
+  outline:solid 3px var(--custom-button-color);
+}
+
+.sign-up h1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.sign-up form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 25px;
+  align-items: center;
+}
+
+.sign-up form input {
+  width: 20%;
+  background:#ffffffda;
+}
