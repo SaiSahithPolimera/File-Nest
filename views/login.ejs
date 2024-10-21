@@ -27,15 +27,11 @@
       </h1>
 
       <div>
-        <form action="/sign-up" method="POST">
-          <h3>Sign up</h3>
-          <% if(!locals.errors) { errors = [];} const userNameErrors = errors ?
-          errors.filter((error) => error.path === "username"): []; const
-          passwordErrors = errors ? errors.filter((error) => error.path ===
-          "password") : []; const confirmPasswordErrors = errors ?
-          errors.filter((error) => error.path ==="confirmPassword") : []; const
-          emailErrors = errors ? errors.filter((error) => error.path ==="email")
-          : []; %>
+        <form action="/login" method="POST">
+          <h3>Login</h3>
+          <% if(!locals.errors) { errors = [];} 
+          const userNameErrors = errors ? errors.filter((error) => error.path === "username"): []; 
+          const passwordErrors = errors ? errors.filter((error) => error.path === "password") : []; %>
           <input
             type="text"
             name="username"
@@ -46,12 +42,6 @@
             <% userNameErrors.forEach((err) => {%>
             <li><%= err.msg%></li>
             <%})%>
-          </ul>
-          <input type="email" name="email" id="email" placeholder="Email" />
-          <ul class="errors">
-            <% emailErrors.forEach((err) => {%>
-            <li><%= err.msg%></li>
-            <% })%>
           </ul>
 
           <input
@@ -65,18 +55,12 @@
             <li><%= err.msg%></li>
             <%})%>
           </ul>
-          <input
-            type="password"
-            name="confirmPassword"
-            id="confirmPassword"
-            placeholder="Confirm Password"
-          />
-          <ul class="errors">
-            <% confirmPasswordErrors.forEach((err) => { %>
-            <li><%= err.msg%></li>
-            <% })%>
-          </ul>
-          <button type="submit">Sign up</button>
+          <% if(locals.message) {%>  
+            <ul class="errors">
+              <li><%= message%></li>
+            </ul>           
+            <%}%>
+          <button type="submit">Login</button>
         </form>
       </div>
     </section>
