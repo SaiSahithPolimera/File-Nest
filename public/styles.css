@@ -222,11 +222,10 @@ main img {
   }
 }
 
-
 .dashboard {
- min-height: 100vh; 
- background: #000;
- color: white;
+  min-height: 100vh;
+  background: #000;
+  color: white;
 }
 
 .dashboard {
@@ -235,7 +234,7 @@ main img {
 }
 
 .dashboard aside div {
-  padding: 24px;
+  padding: 14px;
   border-bottom: 1px solid var(--dashboard-border-color);
 }
 
@@ -246,7 +245,6 @@ main img {
   border-right: 1px solid var(--dashboard-border-color);
 }
 
-
 .dashboard main {
   height: 100%;
 }
@@ -255,25 +253,28 @@ main img {
   list-style: none;
 }
 
-.dashboard ul {
-  padding: 24px;
+.dashboard section {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.dashboard ul li:hover{
+.dashboard ul li:hover {
   cursor: pointer;
   transition: ease-in-out 75ms;
 }
 
 .dashboard main nav {
   border-bottom: 1px solid var(--dashboard-border-color);
-  padding: 12px 25px;
+  padding: 6px 25px;
   display: flex;
   align-items: center;
   gap: 12px;
   justify-content: space-between;
 }
 
-.dashboard main nav input{
+.dashboard main nav input {
   width: 60%;
   height: 10px;
   border-radius: 6px;
@@ -292,13 +293,15 @@ main img {
 .dashboard main nav div {
   display: flex;
   width: 100%;
+  flex-direction: column;
   align-items: center;
   gap: 4px;
 }
 
-.dashboard main nav div button {
-  background: none;
-  border-radius: 25px;
+.dashboard main nav div h1 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .dashboard main nav div button:hover {
@@ -316,14 +319,18 @@ main img {
 .dashboard main nav button:hover {
   cursor: pointer;
   background-color: #1b1a1af7;
-
 }
 
-.dashboard main section ul  {
+.dashboard main section ul {
   display: flex;
   gap: 12px;
   width: 100%;
 }
+
+#folder-data {
+  padding: 25px;
+}
+
 .dashboard main section ul li button {
   padding: var(--custom-button-padding);
   background: var(--custom-button-color);
@@ -337,5 +344,45 @@ main img {
   cursor: pointer;
   transition: var(--default-button-transition);
   border: var(--default-button-borders);
-  
+}
+
+.dashboard table {
+  width: 100%;
+  border-collapse: collapse; 
+}
+
+.dashboard table thead {
+  font-weight: 600;
+  background-color: var(--dashboard-header-bg-color, black);
+  width: 100%;
+}
+
+.dashboard table th,
+.dashboard table td {
+  padding: 12px;
+}
+
+.dashboard table tr {
+  border-bottom: 1px solid var(--dashboard-border-color); 
+
+}
+
+.dashboard table th {
+  text-align: left; 
+}
+
+.dashboard table td {
+  text-align: left;
+}
+
+.dashboard table tbody td {
+  font-size: 0.9rem;
+  color: rgb(236, 233, 233);
+}
+
+#optionContainer button{
+  display: flex;
+  padding: 5px;
+  background: none;
+  border: none;
 }
