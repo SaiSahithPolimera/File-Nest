@@ -33,7 +33,13 @@ const getFileDetails = async (folderName) => {
       }/${dateCreated.getFullYear()}`;
 
       const fileName = file;
-      fileInfos.push({ fileName, fileType, dateCreated: date, fileSize, fileOrFolder });
+      fileInfos.push({
+        fileName,
+        fileType,
+        dateCreated: date,
+        fileSize,
+        fileOrFolder,
+      });
     }
   } catch (err) {
     console.error(err);
@@ -116,9 +122,23 @@ exports.fileUploadPost = (req, res) => {
   return res.redirect("/dashboard");
 };
 
-
-exports.deleteFileGet = (req, res) => {
-  console.log(req.body);
+exports.deleteFilePost = (req, res) => {
+  const { fileName } = req.body;
+  const user_id = req.session.passport.user;
+  fs.remove(`./uploads/${user_id}/${fileName}`, (err) => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log("File deleted successfully!");
+    }
+  });
   return res.redirect("/dashboard");
-  
-}
+};
+
+exports.downloadFileGet = (req, res) => {
+  const {fileName}  = req.query;
+  const user_id = req.session.passport.user;
+  console.log(fileName);
+  const filePath = `./uploads/${user_id}/${fileName}`;
+  res.download(filePath, fileName);    
+};

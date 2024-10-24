@@ -17,5 +17,6 @@ router.get(
   appController.dashboardGet
 );
 router.post("/dashboard", upload.single("fileInput"), appController.fileUploadPost);
-router.get("/dashboard/delete", appController.deleteFileGet);
+router.post("/dashboard/delete", appController.deleteFilePost);
+router.get("/dashboard/download", appController.downloadFileGet);
 module.exports = router;
