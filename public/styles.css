@@ -331,6 +331,9 @@ main img {
   padding: 25px;
 }
 
+#folder-data li {
+  padding: 12px;
+}
 .dashboard main section ul li button {
   padding: var(--custom-button-padding);
   background: var(--custom-button-color);
@@ -386,3 +389,35 @@ main img {
   background: none;
   border: none;
 }
+
+dialog.folderNameDialog {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  border-radius: 25px;
+}
+
+form.newFolderForm {
+  padding: 25px;
+  display: grid;
+  grid-template-rows: 1fr 2fr 1.3fr;
+  row-gap: 24px;
+}
+
+form.newFolderForm #closeButton {
+  justify-self: end;
+  background: #dc2626;
+  border-radius: 12px;
+  padding: 4px;
+}
+
+input#folderName {
+  background-color: #cac4c469;
+}
+
+#folderNameSubmitButton {
+  background: var(--custom-button-color);
+  color: white;
+  border-radius: var(--custom-rounded-borders);
+}
+

@@ -3,8 +3,7 @@ const router = express.Router();
 const appController = require("../controllers/appController");
 const signUpValidator = require("../validators/signUpValidator");
 const loginValidator = require("../validators/loginValidator");
-const multer = require("multer");
-const upload = require("../middleware/uploadMiddleware");
+const driverController = require("../controllers/driverController");
 
 router.get("/", appController.getHome);
 router.get("/sign-up", appController.userSignUpGet);
@@ -16,7 +15,10 @@ router.get(
   appController.isAuthenticated,
   appController.dashboardGet
 );
-router.post("/dashboard", upload.single("fileInput"), appController.fileUploadPost);
+router.post("/dashboard", driverController.fileUploadPost)
 router.post("/dashboard/delete", appController.deleteFilePost);
 router.get("/dashboard/download", appController.downloadFileGet);
+router.get("/dashboard/new", appController.newFolderCreateGet);
+router.get("/dashboard/:folderName", driverController.newFolderGet);
+router.post("/dashboard/:folderName", driverController.newFolderPost);
 module.exports = router;

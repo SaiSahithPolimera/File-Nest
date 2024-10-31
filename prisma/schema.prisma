@@ -8,11 +8,12 @@ datasource db {
 }
 
 model Users {
-  user_id   Int     @id @unique @default(autoincrement())
-  user_name String? @unique
+  user_id   Int       @id @unique @default(autoincrement())
+  user_name String    @unique
   hash      String
   salt      String
-  email     String  @unique
+  email     String    @unique
+  Folders   Folders[]
 }
 
 model Session {
@@ -20,4 +21,25 @@ model Session {
   sid       String   @unique
   expiresAt DateTime
   data      String
+}
+
+model Folders {
+  folder_id    Int      @id @unique @default(autoincrement())
+  folder_name  String   @unique
+  date_created DateTime @default(now())
+  path         String
+  files        Files[]
+  Users        Users    @relation(fields: [usersUser_id], references: [user_id])
+  usersUser_id Int
+}
+
+model Files {
+  file_id          Int      @id @unique @default(autoincrement())
+  file_name        String   @unique
+  date_created     DateTime @default(now())
+  file_type        String
+  file_size        String
+  path             String
+  Folders          Folders  @relation(fields: [foldersFolder_id], references: [folder_id])
+  foldersFolder_id Int
 }

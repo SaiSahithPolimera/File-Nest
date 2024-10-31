@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="/styles.css" />
     <title>Dashboard</title>
   </head>
   <body>
@@ -14,6 +14,10 @@
         </div>
         <ul id="folder-data">
           <li>Your Folders</li>
+          <% if(locals.subFolders) {%>
+          <% for(let i = 0; i < subFolders.length; i++) { %>
+            <li><a name="folderName" href=/dashboard/<%= `${filesData[i].fileName.replace(/ +/g, "-")}`%>> <%= filesData[i].fileName %></a></form></li>
+            <%}}%>
         </ul>
       </aside>
       <main>
@@ -42,23 +46,48 @@
         <section>
           <ul>
             <li>
+              <% let action = "";%>
+              <% if (locals.folderName)  { action = `/dashboard/${folderName.split(" ").join("-")}` }  else {  action = "/dashboard" }   %>
               <form
-                action="/dashboard"
+                action="<%= action %>"
                 method="POST"
                 id="uploadForm"
                 autocomplete="off"
                 enctype="multipart/form-data"
               >
+              <input name="folderName" value="<% if(locals.folderName)  { %><%= folderName.split(" ").join("-") %><% } %>" hidden>
                 <input
                   type="file"
-                  name="fileInput"
+                  name="fileName"
                   id="fileInput"
+                  value=""
                   style="display: none"
                 /><button type="button" id="uploadButton">Upload File</button>
               </form>
             </li>
-            <li><button>New Folder</button></li>
+            <li><button id="newFolderButton">New Folder</button></li>
           </ul>
+          <dialog class="folderNameDialog">
+            <form action="/dashboard/new" class="newFolderForm" id="newFolderForm">
+                <button id="closeButton">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="1em"
+                    height="1em"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="white"
+                      fill-rule="evenodd"
+                      d="M6.793 6.793a1 1 0 0 1 1.414 0L12 10.586l3.793-3.793a1 1 0 1 1 1.414 1.414L13.414 12l3.793 3.793a1 1 0 0 1-1.414 1.414L12 13.414l-3.793 3.793a1 1 0 0 1-1.414-1.414L10.586 12L6.793 8.207a1 1 0 0 1 0-1.414"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <input type="text" placeholder="Folder name" id="folderName" name="folderName" />
+                <button id="folderNameSubmitButton">Submit</button>
+              </form>
+          </dialog>
           <table>
             <thead>
               <tr>
@@ -66,24 +95,28 @@
                 <td>Type</td>
                 <td>Date</td>
                 <td>Size</td>
-                <td>File / Folder</td>
                 <td>Options</td>
               </tr>
             </thead>
             <tbody>
               <% if(locals.filesData) {%> <%for(let i = 0; i < filesData.length;
-              i++) {%>
+              i++) {
+                %>
               <tr>
-                <td><%= filesData[i].fileName %></td>
-                <td><%= filesData[i].fileType %></td>
-                <td><%= filesData[i].dateCreated%></td>
-                <td><%= Math.floor(filesData[i].fileSize / 1024) %> KB</td>
-                <td><%= filesData[i].fileOrFolder %></td>
+                <td><%= filesData[i].file_name %></td>
+                <td><%= filesData[i].file_type %></td>
+                <td><%= filesData[i].date_created.toLocaleDateString('en-GB')%></td>
+                <td><%= filesData[i].file_size %></td>
                 <td>
                   <ul id="optionContainer">
                     <li>
                       <form action="/dashboard/download" method="GET">
-                        <button type="submit" name="fileName" id="downloadButton" value=<%= filesData[i].fileName %>>
+                        <button
+                          type="submit"
+                          name="path"
+                          id="downloadButton"
+                          value=<%= filesData[i].path %>
+                          >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="2em"
@@ -105,7 +138,12 @@
                     </li>
                     <li>
                       <form action="/dashboard/delete" method="POST">
-                        <button type="submit" name="fileName" id="deleteButton" value=<%= filesData[i].fileName %>>
+                        <button
+                          type="submit"
+                          name="path"
+                          id="deleteButton"
+                          value=<%= filesData[i].path %>
+                          >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="2em"
@@ -139,6 +177,24 @@
     const fileInput = document.getElementById("fileInput");
     const uploadButton = document.getElementById("uploadButton");
     const uploadForm = document.getElementById("uploadForm");
+    const dialog = document.querySelector("dialog");
+    const newFolder = document.getElementById("newFolderButton");
+    const newFolderForm = document.getElementById("newFolderForm");
+    const folderName = document.getElementById("folderName");
+    folderName.addEventListener("keypress" , (e) => {
+      if(e.key.toLowerCase() === "enter") {
+        newFolderForm.submit();
+      }
+    })
+    const closeButton = document.getElementById("closeButton");
+    closeButton.addEventListener("click", (e) => {
+      e.preventDefault();dialog.style.animation = "popup-close 0.7s";
+      dialog.close();
+    });
+      newFolder.addEventListener("click", () => {
+      dialog.showModal();
+    });
+
     uploadButton.addEventListener("click", () => {
       fileInput.click();
       fileInput.addEventListener("change", (e) => {

@@ -27,6 +27,7 @@ const verifyUserByName = async (user_name) => {
     return result;
   } catch (err) {
     console.error(err);
+    console.log("Error occurred while verifying user name");
   }
 };
 
@@ -40,11 +41,126 @@ const verifyUserByID = async (user_id) => {
     return result;
   } catch (err) {
     console.error(err);
+    console.log("Error occurred while verifying user id");
+  }
+};
+
+const createNewFolder = async (folder_name, user_id, path) => {
+  try {
+    const result = await prisma.folders.create({
+      data: {
+        folder_name: folder_name,
+        date_created: new Date(),
+        usersUser_id: user_id,
+        path: path
+      },
+    });
+    return result;
+  } catch (err) {
+    console.error(err);
+    console.log("Error occurred while adding new folder");
+  }
+};
+
+const createNewFile = async (
+  file_name,
+  file_size,
+  file_type,
+  path,
+  folder_id
+) => {
+  try {
+    const result = await prisma.files.create({
+      data: {
+        file_name: file_name,
+        file_size: file_size,
+        file_type: file_type,
+        path: path,
+        foldersFolder_id: folder_id,
+      },
+    });
+    return result;
+  } catch (err) {
+    console.error(err);
+    console.log("Error occurred while creating new file");
+  }
+};
+
+const getAllFolders = async () => {
+  try {
+    const result = await prisma.folders.findMany();
+    return result;
+  } catch (err) {
+    console.error(err);
+    console.log("Error while retrieving folders data");
+  }
+};
+
+const getFolderIDByName = async (folder_name) => {
+  try {
+    const [{ folder_id }] = await prisma.folders.findMany({
+      where: {
+        folder_name: folder_name,
+      },
+    });
+    return folder_id;
+  } catch (err) {
+    console.error(err);
+    console.log("Error while retrieving folder ID");
+  }
+};
+
+const getFileIDByName = async (file_name) => {
+  try {
+    const {file_id} = await prisma.files.findUnique({
+      where: {
+        file_name: file_name
+      }
+    })
+    return file_id;
+  } catch (err) {
+    console.error(err);
+    console.log("Error while retrieving file ID");
+  }
+};
+
+const deleteFile = async (file_id) => {
+  try {
+    const result = await prisma.files.delete({
+      where: {
+        file_id: file_id,
+      },
+    });
+    return result;
+  } catch (err) {
+    console.error(err);
+    console.log("Error while deleting file");
+  }
+};
+
+const getFilesFromFolder = async (folder_id) => {
+  try {
+    const result = await prisma.files.findMany({
+      where: {
+        foldersFolder_id: folder_id,
+      },
+    });
+    return result;
+  } catch (err) {
+    console.error(err);
+    console.log("Error retrieving file data from folder");
   }
 };
 
 module.exports = {
-  createUser,
   verifyUserByName,
   verifyUserByID,
+  createUser,
+  createNewFolder,
+  createNewFile,
+  getAllFolders,
+  getFilesFromFolder,
+  getFolderIDByName,
+  getFileIDByName,
+  deleteFile,
 };

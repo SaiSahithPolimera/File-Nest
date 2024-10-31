@@ -5,24 +5,23 @@ const db = require("../db/queries");
 const fs = require("fs-extra");
 const path = require("path");
 
-const loadFolderData = async (folderName) => {
+const loadFolderData = async (path) => {
   try {
-    const files = await fs.readdir(`uploads/${folderName}`);
+    const files = await fs.readdir(path);
     return files;
   } catch (err) {
     console.error(err);
     console.log("Error while loading files from folders");
-
     return [];
   }
 };
 
-const getFileDetails = async (folderName) => {
+const getFileDetails = async (path) => {
   const fileInfos = [];
   try {
-    const files = await loadFolderData(folderName);
+    const files = await loadFolderData(path);
     for (const file of files) {
-      const filePath = `uploads/${folderName}/${file}`;
+      const filePath = `${path}/${file}`;
       const stats = await fs.stat(filePath);
       const fileOrFolder = stats.isFile() ? "File" : "Folder";
       const fileType = path.extname(filePath);
@@ -91,7 +90,8 @@ exports.isAuthenticated = async (req, res, next) => {
 exports.dashboardGet = async (req, res) => {
   const user_id = req.session.passport.user;
   try {
-    const filesData = await getFileDetails(user_id);
+    const folderID = await db.getFolderIDByName(user_id.toString());
+    const filesData = await db.getFilesFromFolder(folderID);
     return res.render("dashboard", { filesData: filesData });
   } catch (err) {
     console.error(err);
@@ -118,27 +118,41 @@ exports.userSignUpPost = async (req, res) => {
   }
 };
 
-exports.fileUploadPost = (req, res) => {
-  return res.redirect("/dashboard");
-};
-
-exports.deleteFilePost = (req, res) => {
-  const { fileName } = req.body;
-  const user_id = req.session.passport.user;
-  fs.remove(`./uploads/${user_id}/${fileName}`, (err) => {
+exports.deleteFilePost = async (req, res) => {
+  const { path } = req.body;
+  const routes = path.split("/");
+  const fileName = routes[routes.length - 1];
+  console.log(fileName);
+  fs.remove(path, async (err) => {
     if (err) {
       console.error(err);
     } else {
       console.log("File deleted successfully!");
+      const fileID = await db.getFileIDByName(fileName);
+      await db.deleteFile(fileID);
     }
   });
-  return res.redirect("/dashboard");
+  res.redirect("/dashboard");
 };
 
 exports.downloadFileGet = (req, res) => {
-  const {fileName}  = req.query;
+  const { path } = req.query;
+  console.log(path);
+  res.download(path);
+};
+
+exports.newFolderCreateGet = async (req, res) => {
+  const { folderName } = req.query;
   const user_id = req.session.passport.user;
-  console.log(fileName);
-  const filePath = `./uploads/${user_id}/${fileName}`;
-  res.download(filePath, fileName);    
+  const dirPath = `./uploads/${user_id}/${folderName}`;
+  await db.createNewFolder(folderName, user_id, dirPath);
+  fs.ensureDir(dirPath)
+    .then((res) => {
+      console.log("Folder created successfully!");
+    })
+    .catch((err) => {
+      console.error(err);
+      console.log(`Error occurred while creating folder ${folderName}`);
+    });
+  return res.redirect("/dashboard");
 };
