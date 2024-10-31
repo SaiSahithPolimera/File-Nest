@@ -3,49 +3,6 @@ const { genPassword } = require("../lib/passportUtils");
 const passport = require("passport");
 const db = require("../db/queries");
 const fs = require("fs-extra");
-const path = require("path");
-
-const loadFolderData = async (path) => {
-  try {
-    const files = await fs.readdir(path);
-    return files;
-  } catch (err) {
-    console.error(err);
-    console.log("Error while loading files from folders");
-    return [];
-  }
-};
-
-const getFileDetails = async (path) => {
-  const fileInfos = [];
-  try {
-    const files = await loadFolderData(path);
-    for (const file of files) {
-      const filePath = `${path}/${file}`;
-      const stats = await fs.stat(filePath);
-      const fileOrFolder = stats.isFile() ? "File" : "Folder";
-      const fileType = path.extname(filePath);
-      const fileSize = stats.size;
-      const dateCreated = stats.atime;
-      const date = `${dateCreated.getDate()}/${
-        dateCreated.getMonth() + 1
-      }/${dateCreated.getFullYear()}`;
-
-      const fileName = file;
-      fileInfos.push({
-        fileName,
-        fileType,
-        dateCreated: date,
-        fileSize,
-        fileOrFolder,
-      });
-    }
-  } catch (err) {
-    console.error(err);
-    console.log("Error while retrieving file details");
-  }
-  return fileInfos;
-};
 
 exports.getHome = (req, res) => {
   res.render("home");
@@ -92,7 +49,8 @@ exports.dashboardGet = async (req, res) => {
   try {
     const folderID = await db.getFolderIDByName(user_id.toString());
     const filesData = await db.getFilesFromFolder(folderID);
-    return res.render("dashboard", { filesData: filesData });
+    const subFolders = await db.getAllFolders(user_id.toString(), user_id);
+    return res.render("dashboard", { filesData: filesData, subFolders: subFolders });
   } catch (err) {
     console.error(err);
     console.log("Error while loading file data");
@@ -122,7 +80,6 @@ exports.deleteFilePost = async (req, res) => {
   const { path } = req.body;
   const routes = path.split("/");
   const fileName = routes[routes.length - 1];
-  console.log(fileName);
   fs.remove(path, async (err) => {
     if (err) {
       console.error(err);
@@ -137,7 +94,6 @@ exports.deleteFilePost = async (req, res) => {
 
 exports.downloadFileGet = (req, res) => {
   const { path } = req.query;
-  console.log(path);
   res.download(path);
 };
 

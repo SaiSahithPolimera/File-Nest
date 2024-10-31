@@ -21,4 +21,5 @@ router.get("/dashboard/download", appController.downloadFileGet);
 router.get("/dashboard/new", appController.newFolderCreateGet);
 router.get("/dashboard/:folderName", driverController.newFolderGet);
 router.post("/dashboard/:folderName", driverController.newFolderPost);
+router.get("/dashboard/delete/:folderName", driverController.deleteFolderGet);
 module.exports = router;

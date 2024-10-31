@@ -86,9 +86,17 @@ const createNewFile = async (
   }
 };
 
-const getAllFolders = async () => {
+const getAllFolders = async (folder_name, user_id) => {
   try {
-    const result = await prisma.folders.findMany();
+    const result = await prisma.folders.findMany(
+      {
+        where: 
+        {
+          folder_name: { not: folder_name },
+          usersUser_id: user_id,
+        }
+      }
+    );
     return result;
   } catch (err) {
     console.error(err);
@@ -109,6 +117,23 @@ const getFolderIDByName = async (folder_name) => {
     console.log("Error while retrieving folder ID");
   }
 };
+
+const getFolderDetails = async (folder_id) => {
+  try {
+    const result = await prisma.folders.findUnique(
+      {
+        where: {
+          folder_id: folder_id
+        }
+      }
+    )
+    return result;
+  }
+  catch(err) {
+    console.log("Error while retrieving folder data");
+    
+  }
+}
 
 const getFileIDByName = async (file_name) => {
   try {
@@ -138,6 +163,24 @@ const deleteFile = async (file_id) => {
   }
 };
 
+const deleteFolder = async (folder_id) => {
+  try {
+    const result = await prisma.folders.delete(
+      {
+        where: {
+          folder_id: folder_id
+        }
+      }
+    )
+    return result;
+  }
+  catch(err) {
+    console.error(err);
+    console.log("Error occurred while deleting the folder!");
+    
+  }
+}
+
 const getFilesFromFolder = async (folder_id) => {
   try {
     const result = await prisma.files.findMany({
@@ -162,5 +205,7 @@ module.exports = {
   getFilesFromFolder,
   getFolderIDByName,
   getFileIDByName,
+  getFolderDetails,
   deleteFile,
+  deleteFolder
 };

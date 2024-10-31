@@ -2,6 +2,8 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs-extra");
 const db = require("../db/queries");
+
+
 const storage = multer.diskStorage({
   destination: async (req, file, cb) => {
     const dirPath = `uploads/${req.session.passport.user}`;
@@ -25,7 +27,6 @@ const storage = multer.diskStorage({
     cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
-
 const checkFileType = (file, cb) => {
   const fileTypes = /jpeg|jpg|txt|docx|pdf|png|gif/;
   const extension = fileTypes.test(
@@ -90,3 +91,19 @@ exports.newFolderPost = [
     res.redirect(`/dashboard/${folderName}`);
   },
 ];
+
+exports.deleteFolderGet = async (req, res) => {
+  const { folderName } = req.params;
+  const folderID = await db.getFolderIDByName(folderName);
+  const { path } = await db.getFolderDetails(folderID);
+  fs.remove(path, async (err) => {
+    if (err) {
+      console.log("Error while removing folder");
+      console.error(err);
+    } else {
+      console.log("Folder removed successfully!");
+      await db.deleteFolder(folderID);
+    }
+  });
+  res.redirect(`/dashboard/${folderName}`);
+};

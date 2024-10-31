@@ -13,10 +13,26 @@
           <span>Dashboard</span>
         </div>
         <ul id="folder-data">
-          <li>Your Folders</li>
+          <a href="/dashboard">
+            <li>Home</li>
+          </a>
           <% if(locals.subFolders) {%>
           <% for(let i = 0; i < subFolders.length; i++) { %>
-            <li><a name="folderName" href=/dashboard/<%= `${filesData[i].fileName.replace(/ +/g, "-")}`%>> <%= filesData[i].fileName %></a></form></li>
+           <li><a name="folderName" href=/dashboard/<%= `${subFolders[i].folder_name.replace(/ +/g, "-")}`%>><%= subFolders[i].folder_name %>  </a> <a name="folderName"  href=/dashboard/delete/<%= `${subFolders[i].folder_name.replace(/ +/g, "-")}`%>><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="1em"
+              height="1em"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="none"
+                stroke="white"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="m19.5 5.5l-.62 10.025c-.158 2.561-.237 3.842-.88 4.763a4 4 0 0 1-1.2 1.128c-.957.584-2.24.584-4.806.584c-2.57 0-3.855 0-4.814-.585a4 4 0 0 1-1.2-1.13c-.642-.922-.72-2.205-.874-4.77L4.5 5.5M3 5.5h18m-4.944 0l-.683-1.408c-.453-.936-.68-1.403-1.071-1.695a2 2 0 0 0-.275-.172C13.594 2 13.074 2 12.035 2c-1.066 0-1.599 0-2.04.234a2 2 0 0 0-.278.18c-.395.303-.616.788-1.058 1.757L8.053 5.5m1.447 11v-6m5 6v-6"
+              />
+            </svg> </a> </li>
             <%}}%>
         </ul>
       </aside>
@@ -46,10 +62,10 @@
         <section>
           <ul>
             <li>
-              <% let action = "";%>
-              <% if (locals.folderName)  { action = `/dashboard/${folderName.split(" ").join("-")}` }  else {  action = "/dashboard" }   %>
+              <% let fileUploadAction = "";%>
+              <% if (locals.folderName)  { fileUploadAction = `/dashboard/${folderName.split(" ").join("-")}` }  else {  fileUploadAction = "/dashboard" }   %>
               <form
-                action="<%= action %>"
+                action="<%= fileUploadAction %>"
                 method="POST"
                 id="uploadForm"
                 autocomplete="off"
@@ -68,7 +84,7 @@
             <li><button id="newFolderButton">New Folder</button></li>
           </ul>
           <dialog class="folderNameDialog">
-            <form action="/dashboard/new" class="newFolderForm" id="newFolderForm">
+            <form action="/dashboard/new" name="path" class="newFolderForm" id="newFolderForm">
                 <button id="closeButton">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
