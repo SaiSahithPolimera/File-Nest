@@ -57,7 +57,7 @@
               </svg>
             </h1>
           </div>
-          <button>Feedback</button>
+          <button><a href="https://github.com/SaiSahithPolimera/File-Nest">Feedback</a></button>
         </nav>
         <section>
           <ul>
@@ -84,7 +84,8 @@
             <li><button id="newFolderButton">New Folder</button></li>
           </ul>
           <dialog class="folderNameDialog">
-            <form action="/dashboard/new" name="path" class="newFolderForm" id="newFolderForm">
+          <% let parentFolderID = ""; if(locals.folderID) { parentFolderID = folderID } %>
+            <form method="GET" action="/dashboard/new/<%= parentFolderID %>" name="parentFolderID" class="newFolderForm" id="newFolderForm"> 
                 <button id="closeButton">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -108,8 +109,6 @@
             <thead>
               <tr>
                 <td>Name</td>
-                <td>Type</td>
-                <td>Date</td>
                 <td>Size</td>
                 <td>Options</td>
               </tr>
@@ -120,8 +119,6 @@
                 %>
               <tr>
                 <td><%= filesData[i].file_name %></td>
-                <td><%= filesData[i].file_type %></td>
-                <td><%= filesData[i].date_created.toLocaleDateString('en-GB')%></td>
                 <td><%= filesData[i].file_size %></td>
                 <td>
                   <ul id="optionContainer">
@@ -185,6 +182,9 @@
               <%}}%>
             </tbody>
           </table>
+          <% if(locals.error) { %>
+            <span><%= error %></span>
+            <% }%>
         </section>
       </main>
     </section>

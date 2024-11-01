@@ -3,18 +3,14 @@ const path = require("path");
 const fs = require("fs-extra");
 const db = require("../db/queries");
 
-
 const storage = multer.diskStorage({
   destination: async (req, file, cb) => {
-    const dirPath = `uploads/${req.session.passport.user}`;
+    const userID = req.session.passport.user;
+    const dirPath = `uploads/${userID}`;
     try {
       if (!(await fs.exists(dirPath))) {
         await fs.mkdir(dirPath);
-        await db.createNewFolder(
-          req.session.passport.user.toString(),
-          req.session.passport.user,
-          dirPath
-        );
+        await db.createNewFolder(userID.toString(), userID, dirPath, null);
         console.log("Folder created successfully!");
       }
     } catch (err) {
@@ -51,59 +47,98 @@ exports.fileUploadPost = [
   upload.single("fileName"),
   async (req, res) => {
     const file = req.file;
-    const { folderName } = !req.params ? req.session.passport.user : req.params;
-    const folderID = await db.getFolderIDByName(folderName);
+    const userID = req.session.passport.user;
+    const { folderName } = req.params;
+    const folderID = folderName
+      ? await db.getFolderIDByName(folderName, userID)
+      : await db.getFolderIDByName(userID.toString(), userID);
     const fileSize = (file.size / 1048676).toFixed(2) + " MB";
-    await db.createNewFile(
-      file.filename,
-      fileSize,
-      file.mimetype,
-      file.path,
-      folderID
-    );
+    if ((file.size / 1048676).toFixed(2) > 10) {
+      return res.render("dashboard", {
+        error: "Files size cannot exceed 10MB",
+      });
+    }
+    await db.createNewFile(file.filename, fileSize, file.path, folderID);
     return res.redirect("/dashboard");
   },
 ];
 
 exports.newFolderGet = async (req, res) => {
   const folderName = req.params.folderName.split("-").join(" ");
-  const folderID = await db.getFolderIDByName(folderName);
+  const userID = req.session.passport.user;
+  const folderID = await db.getFolderIDByName(folderName, userID);
   const filesData = await db.getFilesFromFolder(folderID);
-  return res.render("dashboard", { filesData: filesData, folderName });
+  const subFolders = await db.getSubFolders(folderID, userID);
+  return res.render("dashboard", {
+    filesData: filesData,
+    subFolders: subFolders,
+    folderName,
+    folderID,
+  });
 };
 
 exports.newFolderPost = [
   upload.single("fileName"),
   async (req, res) => {
     const file = req.file;
-    const { folderName } = !req.params ? req.session.passport.user : req.params;
+    console.log("Invoke new folder post");
+    const userID = req.session.passport.user;
+    const { folderName } = !req.params ? userID : req.params;
     const folderID = await db.getFolderIDByName(
-      folderName.split("-").join(" ")
-    );
+      folderName.split("-").join(" "),
+      userID
+    );``
     const fileSize = (file.size / 1048676).toFixed(2) + " MB";
-    await db.createNewFile(
-      file.filename,
-      fileSize,
-      file.mimetype,
-      file.path,
-      folderID
-    );
-    res.redirect(`/dashboard/${folderName}`);
+    if ((file.size / 1048676).toFixed(2) > 10) {
+      return res.render("dashboard", {
+        error: "Files size cannot exceed 10MB",
+      });
+    }
+    await db.createNewFile(file.filename, fileSize, file.path, folderID);
+    return res.redirect(`/dashboard/${folderName}`);
   },
 ];
 
+const deleteFiles = (files) => {
+  files.forEach((file) => {
+    fs.remove(file.path, async (err) => {
+      if (err) {
+        console.log(`Error occurred while deleting ${file.file_name}`);
+      } else {
+        await db.deleteFile(file.file_id);
+      }
+    });
+  });
+};
+
 exports.deleteFolderGet = async (req, res) => {
   const { folderName } = req.params;
-  const folderID = await db.getFolderIDByName(folderName);
-  const { path } = await db.getFolderDetails(folderID);
+  const userID = req.session.passport.user;
+  const folderID = await db.getFolderIDByName(
+    folderName.split("-").join(" "),
+    userID
+  );
+  const { path } = await db.getFolderDetails(folderID, userID);
+  const files = await db.getFilesFromFolder(folderID);
+  const subFolders = await db.getSubFolders(folderID, userID);
   fs.remove(path, async (err) => {
     if (err) {
       console.log("Error while removing folder");
       console.error(err);
     } else {
+      if (files) {
+        deleteFiles(files);
+      }
+      if (subFolders) {
+        subFolders.forEach(async (subFolder) => {
+          const files = await db.getFilesFromFolder(subFolder.folder_id);
+          deleteFiles(files);
+          await db.deleteFolder(subFolder.folder_id, userID);
+        });
+      }
       console.log("Folder removed successfully!");
-      await db.deleteFolder(folderID);
+      await db.deleteFolder(folderID, userID);
+      res.redirect(`/dashboard`);
     }
   });
-  res.redirect(`/dashboard/${folderName}`);
 };

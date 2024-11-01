@@ -212,16 +212,6 @@ main img {
   width: 15%;
 }
 
-@media (max-width: 640px) {
-  .home {
-    padding: 12px 25px;
-    text-align: center;
-  }
-  .buttons {
-    flex-direction: column;
-  }
-}
-
 .dashboard {
   min-height: 100vh;
   background: #000;
@@ -351,7 +341,7 @@ main img {
 
 .dashboard table {
   width: 100%;
-  border-collapse: collapse; 
+  border-collapse: collapse;
 }
 
 .dashboard table thead {
@@ -366,12 +356,11 @@ main img {
 }
 
 .dashboard table tr {
-  border-bottom: 1px solid var(--dashboard-border-color); 
-
+  border-bottom: 1px solid var(--dashboard-border-color);
 }
 
 .dashboard table th {
-  text-align: left; 
+  text-align: left;
 }
 
 .dashboard table td {
@@ -383,7 +372,7 @@ main img {
   color: rgb(236, 233, 233);
 }
 
-#optionContainer button{
+#optionContainer button {
   display: flex;
   padding: 5px;
   background: none;
@@ -421,12 +410,54 @@ input#folderName {
   border-radius: var(--custom-rounded-borders);
 }
 
-#folder-data li{
-  display: grid; 
-  grid-template-columns: 1fr 0.1fr;
+#folder-data li {
+  display: grid;
+  grid-template-columns: 0.7fr 0.3fr;
+  column-gap: 4px;
+  justify-items: start;
   align-items: center;
 }
 
-#folder-data li svg {
+#folder-data li a {
+  justify-self: center;
   background: #000;
+}
+
+@media (max-width: 640px) {
+  .home {
+    padding: 12px 25px;
+    text-align: center;
+  }
+  .buttons {
+    flex-direction: column;
+  }
+  .dashboard {
+    font-size: 0.9rem;
+  }
+  .dashboard aside div {
+    padding: 12px;
+  }
+  #folder-data {
+    display: flex;
+    gap: 12px;
+    padding: 4px;
+    flex-direction: column;
+  }
+  #folder-data a {
+    padding: 2px;
+  }
+  .dashboard main nav {
+    padding: 4px;
+  }
+  .dashboard table button {
+    transform: scale(2);
+    padding: 2px;
+  }
+
+  dialog.folderNameDialog {
+    position: absolute;
+    top: 30%;
+    left: 23%;
+    border-radius: 25px;
+  }
 }

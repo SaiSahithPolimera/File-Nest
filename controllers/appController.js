@@ -45,12 +45,15 @@ exports.isAuthenticated = async (req, res, next) => {
 };
 
 exports.dashboardGet = async (req, res) => {
-  const user_id = req.session.passport.user;
+  const userID = req.session.passport.user;
   try {
-    const folderID = await db.getFolderIDByName(user_id.toString());
+    const folderID = await db.getFolderIDByName(userID.toString());
     const filesData = await db.getFilesFromFolder(folderID);
-    const subFolders = await db.getAllFolders(user_id.toString(), user_id);
-    return res.render("dashboard", { filesData: filesData, subFolders: subFolders });
+    const subFolders = await db.getSubFolders(userID, userID);
+    return res.render("dashboard", {
+      filesData: filesData,
+      subFolders: subFolders,
+    });
   } catch (err) {
     console.error(err);
     console.log("Error while loading file data");
@@ -99,9 +102,21 @@ exports.downloadFileGet = (req, res) => {
 
 exports.newFolderCreateGet = async (req, res) => {
   const { folderName } = req.query;
-  const user_id = req.session.passport.user;
-  const dirPath = `./uploads/${user_id}/${folderName}`;
-  await db.createNewFolder(folderName, user_id, dirPath);
+  const { parentFolderID } = req.params;
+  const userID = req.session.passport.user;
+  let dirPath = `./uploads/${userID}/${folderName}`;
+  if (parentFolderID) {
+    const { path } = await db.getFolderDetails(Number(parentFolderID), userID);
+    dirPath = `${path}/${folderName}`;
+    await db.createNewFolder(
+      folderName,
+      userID,
+      dirPath,
+      Number(parentFolderID)
+    );
+  } else {
+    await db.createNewFolder(folderName, userID, dirPath, userID);
+  }
   fs.ensureDir(dirPath)
     .then((res) => {
       console.log("Folder created successfully!");
@@ -110,5 +125,5 @@ exports.newFolderCreateGet = async (req, res) => {
       console.error(err);
       console.log(`Error occurred while creating folder ${folderName}`);
     });
-  return res.redirect("/dashboard");
+  return res.redirect(`/dashboard`);
 };

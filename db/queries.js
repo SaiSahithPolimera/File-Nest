@@ -45,14 +45,14 @@ const verifyUserByID = async (user_id) => {
   }
 };
 
-const createNewFolder = async (folder_name, user_id, path) => {
+const createNewFolder = async (folder_name, user_id, path, parent_folder) => {
   try {
     const result = await prisma.folders.create({
       data: {
         folder_name: folder_name,
-        date_created: new Date(),
         usersUser_id: user_id,
-        path: path
+        parent_folder: parent_folder,
+        path: path,
       },
     });
     return result;
@@ -62,19 +62,12 @@ const createNewFolder = async (folder_name, user_id, path) => {
   }
 };
 
-const createNewFile = async (
-  file_name,
-  file_size,
-  file_type,
-  path,
-  folder_id
-) => {
+const createNewFile = async (file_name, file_size, path, folder_id) => {
   try {
     const result = await prisma.files.create({
       data: {
         file_name: file_name,
         file_size: file_size,
-        file_type: file_type,
         path: path,
         foldersFolder_id: folder_id,
       },
@@ -86,29 +79,12 @@ const createNewFile = async (
   }
 };
 
-const getAllFolders = async (folder_name, user_id) => {
+const getFolderIDByName = async (folder_name, user_id) => {
   try {
-    const result = await prisma.folders.findMany(
-      {
-        where: 
-        {
-          folder_name: { not: folder_name },
-          usersUser_id: user_id,
-        }
-      }
-    );
-    return result;
-  } catch (err) {
-    console.error(err);
-    console.log("Error while retrieving folders data");
-  }
-};
-
-const getFolderIDByName = async (folder_name) => {
-  try {
-    const [{ folder_id }] = await prisma.folders.findMany({
+    const {folder_id} = await prisma.folders.findUnique({
       where: {
         folder_name: folder_name,
+        usersUser_id: user_id,
       },
     });
     return folder_id;
@@ -118,30 +94,27 @@ const getFolderIDByName = async (folder_name) => {
   }
 };
 
-const getFolderDetails = async (folder_id) => {
+const getFolderDetails = async (folder_id, user_id) => {
   try {
-    const result = await prisma.folders.findUnique(
-      {
-        where: {
-          folder_id: folder_id
-        }
-      }
-    )
+    const result = await prisma.folders.findUnique({
+      where: {
+        folder_id: folder_id,
+        usersUser_id: user_id,
+      },
+    });
     return result;
-  }
-  catch(err) {
+  } catch (err) {
     console.log("Error while retrieving folder data");
-    
   }
-}
+};
 
 const getFileIDByName = async (file_name) => {
   try {
-    const {file_id} = await prisma.files.findUnique({
+    const { file_id } = await prisma.files.findUnique({
       where: {
-        file_name: file_name
-      }
-    })
+        file_name: file_name,
+      },
+    });
     return file_id;
   } catch (err) {
     console.error(err);
@@ -163,23 +136,40 @@ const deleteFile = async (file_id) => {
   }
 };
 
-const deleteFolder = async (folder_id) => {
+const deleteFolder = async (folder_id, user_id) => {
   try {
-    const result = await prisma.folders.delete(
-      {
-        where: {
-          folder_id: folder_id
-        }
-      }
-    )
+    const result = await prisma.folders.delete({
+      where: {
+        folder_id: folder_id,
+        usersUser_id: user_id,
+      },
+    });
+    await prisma.files.deleteMany({
+      where: {
+        foldersFolder_id: folder_id,
+      },
+    });
     return result;
-  }
-  catch(err) {
+  } catch (err) {
     console.error(err);
     console.log("Error occurred while deleting the folder!");
-    
   }
-}
+};
+
+const getSubFolders = async (folder_id, user_id) => {
+  try {
+    const result = await prisma.folders.findMany({
+      where: {
+        parent_folder: folder_id,
+        usersUser_id: user_id,
+      },
+    });
+    return result;
+  } catch (err) {
+    console.error(err);
+    console.log("Error while retrieving sub folder details!");
+  }
+};
 
 const getFilesFromFolder = async (folder_id) => {
   try {
@@ -201,11 +191,11 @@ module.exports = {
   createUser,
   createNewFolder,
   createNewFile,
-  getAllFolders,
   getFilesFromFolder,
   getFolderIDByName,
   getFileIDByName,
   getFolderDetails,
+  getSubFolders,
   deleteFile,
-  deleteFolder
+  deleteFolder,
 };
