@@ -2,7 +2,7 @@ const { validationResult } = require("express-validator");
 const { genPassword } = require("../lib/passportUtils");
 const passport = require("passport");
 const db = require("../db/queries");
-const supabase = require("../config/supabase");
+const supabase = require("../config/supabase.js");
 
 exports.getHome = (req, res) => {
   res.render("home");
