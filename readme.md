@@ -2,7 +2,7 @@
 
 ### What is File-Nest
 
-File nest is a minimal personal storage service which helps you upload your files to the cloud and access them from anywhere.
+File nest is a minimal personal storage service which helps users upload their files to the cloud and access them from anywhere.
 
 ### Features
 
