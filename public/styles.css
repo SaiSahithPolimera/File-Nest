@@ -167,6 +167,10 @@ input:focus {
   margin: 0 auto;
 }
 
+.dashboard main nav .sidebar {
+  display: none;
+}
+
 .errors {
   align-self: start;
 }
@@ -350,6 +354,10 @@ main img {
   width: 100%;
 }
 
+#sidebarClose {
+  display: none;
+}
+
 .dashboard table th,
 .dashboard table td {
   padding: 12px;
@@ -423,34 +431,79 @@ input#folderName {
   background: #000;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .home {
     padding: 12px 25px;
     text-align: center;
   }
+
+  #sidebarClose {
+    display: block;
+  }
+
+  .dashboard main nav .sidebar {
+    display: block;
+  }
+
+  .dashboard main nav div {
+    align-items: start;
+  }
+
+  .dashboard main {
+    width: 100%;
+  }
+
   .buttons {
     flex-direction: column;
   }
+
+  #folder-data {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  #folder-data li {
+    display: flex;
+    justify-content: start;
+  }
+
   .dashboard {
-    font-size: 0.9rem;
+    display: flex;
   }
-  .dashboard aside div {
-    padding: 12px;
+
+  .dashboard aside {
+    display: none;
   }
+
   #folder-data {
     display: flex;
     gap: 12px;
     padding: 4px;
     flex-direction: column;
   }
+
   #folder-data a {
     padding: 2px;
   }
+
   .dashboard main nav {
     padding: 4px;
   }
+
+  #sidebarClose {
+    background: #000;
+  }
+
+  #sidebarClose:hover {
+    cursor: pointer;
+  }
+
+  #folderContainer div span {
+    display: flex;
+    justify-content: space-between;
+  }
+
   .dashboard table button {
-    transform: scale(2);
     padding: 2px;
   }
 

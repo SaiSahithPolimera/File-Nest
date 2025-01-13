@@ -8,9 +8,13 @@
   </head>
   <body>
     <section class="dashboard">
-      <aside>
+      <aside id="folderContainer">
         <div>
-          <span>Dashboard</span>
+          <span>Dashboard
+            <button id="sidebarClose">
+              <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="-6 -6 24 24"><path fill="#fdf4f4" d="m7.314 5.9l3.535-3.536A1 1 0 1 0 9.435.95L5.899 4.485L2.364.95A1 1 0 1 0 .95 2.364l3.535 3.535L.95 9.435a1 1 0 1 0 1.414 1.414l3.535-3.535l3.536 3.535a1 1 0 1 0 1.414-1.414L7.314 5.899z"></path></svg>
+            </button>
+          </span>
         </div>
         <ul id="folder-data">
           <a href="/dashboard">
@@ -38,6 +42,11 @@
       </aside>
       <main>
         <nav>
+          <div class="sidebar">
+            <button id="sideBarToggle">
+              <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 0 24 24"><path fill="#fdf4f4" d="M4 6a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m0 6a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m1 5a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2z"></path></svg>
+            </button>
+          </div>
           <div>
             <h1>
               File Nest
@@ -197,6 +206,25 @@
     const newFolder = document.getElementById("newFolderButton");
     const newFolderForm = document.getElementById("newFolderForm");
     const folderName = document.getElementById("folderName");
+    const sideBarToggle = document.getElementById("sideBarToggle");
+    const sidebarClose = document.getElementById("sidebarClose");
+    const folderContainer = document.getElementById("folderContainer");
+    sideBarToggle.addEventListener("click", () => {
+      if(getComputedStyle(folderContainer).display === "block") {
+        folderContainer.style.display ="none"
+      }
+      else  {
+        folderContainer.style.display = "block"
+        folderContainer.style.position = "absolute"
+        folderContainer.style.width = "100%"
+        folderContainer.style.background = "#000"
+      }
+    });
+    sidebarClose.addEventListener("click" , () => {
+      if(getComputedStyle(folderContainer).display === "block") {
+        folderContainer.style.display ="none";
+      }
+    })
     folderName.addEventListener("keypress" , (e) => {
       if(e.key.toLowerCase() === "enter") {
         newFolderForm.submit();
