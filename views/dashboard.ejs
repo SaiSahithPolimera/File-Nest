@@ -12,7 +12,9 @@
         <div>
           <span>Dashboard
             <button id="sidebarClose">
-              <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="-6 -6 24 24"><path fill="#fdf4f4" d="m7.314 5.9l3.535-3.536A1 1 0 1 0 9.435.95L5.899 4.485L2.364.95A1 1 0 1 0 .95 2.364l3.535 3.535L.95 9.435a1 1 0 1 0 1.414 1.414l3.535-3.535l3.536 3.535a1 1 0 1 0 1.414-1.414L7.314 5.899z"></path></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="-6 -6 24 24">
+                <path fill="#fdf4f4" d="m7.314 5.9l3.535-3.536A1 1 0 1 0 9.435.95L5.899 4.485L2.364.95A1 1 0 1 0 .95 2.364l3.535 3.535L.95 9.435a1 1 0 1 0 1.414 1.414l3.535-3.535l3.536 3.535a1 1 0 1 0 1.414-1.414L7.314 5.899z"/>
+              </svg>
             </button>
           </span>
         </div>
@@ -21,30 +23,40 @@
             <li>Home</li>
           </a>
           <% if(locals.subFolders) {%>
-          <% for(let i = 0; i < subFolders.length; i++) { %>
-           <li><a name="folderName" href=/dashboard/<%= `${subFolders[i].folder_name.replace(/ +/g, "-")}`%>><%= subFolders[i].folder_name %>  </a> <a name="folderName"  href=/dashboard/delete/<%= `${subFolders[i].folder_name.replace(/ +/g, "-")}`%>><svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="1em"
-              height="1em"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="none"
-                stroke="white"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="1.5"
-                d="m19.5 5.5l-.62 10.025c-.158 2.561-.237 3.842-.88 4.763a4 4 0 0 1-1.2 1.128c-.957.584-2.24.584-4.806.584c-2.57 0-3.855 0-4.814-.585a4 4 0 0 1-1.2-1.13c-.642-.922-.72-2.205-.874-4.77L4.5 5.5M3 5.5h18m-4.944 0l-.683-1.408c-.453-.936-.68-1.403-1.071-1.695a2 2 0 0 0-.275-.172C13.594 2 13.074 2 12.035 2c-1.066 0-1.599 0-2.04.234a2 2 0 0 0-.278.18c-.395.303-.616.788-1.058 1.757L8.053 5.5m1.447 11v-6m5 6v-6"
-              />
-            </svg> </a> </li>
-            <%}}%>
+            <% for(let i = 0; i < subFolders.length; i++) { %>
+              <li>
+                <a name="folderName" href=/dashboard/<%= subFolders[i].folder_name.replace(/ +/g, "-") %>>
+                  <%= subFolders[i].folder_name %>
+                </a>
+                <a name="folderName" href=/dashboard/delete/<%= subFolders[i].folder_name.replace(/ +/g, "-") %>>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="1em"
+                    height="1em"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="none"
+                      stroke="white"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="m19.5 5.5l-.62 10.025c-.158 2.561-.237 3.842-.88 4.763a4 4 0 0 1-1.2 1.128c-.957.584-2.24.584-4.806.584c-2.57 0-3.855 0-4.814-.585a4 4 0 0 1-1.2-1.13c-.642-.922-.72-2.205-.874-4.77L4.5 5.5M3 5.5h18m-4.944 0l-.683-1.408c-.453-.936-.68-1.403-1.071-1.695a2 2 0 0 0-.275-.172C13.594 2 13.074 2 12.035 2c-1.066 0-1.599 0-2.04.234a2 2 0 0 0-.278.18c-.395.303-.616.788-1.058 1.757L8.053 5.5m1.447 11v-6m5 6v-6"
+                    />
+                  </svg>
+                </a>
+              </li>
+            <% } %>
+          <% } %>
         </ul>
       </aside>
       <main>
         <nav>
           <div class="sidebar">
             <button id="sideBarToggle">
-              <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 0 24 24"><path fill="#fdf4f4" d="M4 6a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m0 6a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m1 5a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2z"></path></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 0 24 24">
+                <path fill="#fdf4f4" d="M4 6a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m0 6a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1m1 5a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2z"/>
+              </svg>
             </button>
           </div>
           <div>
@@ -66,13 +78,20 @@
               </svg>
             </h1>
           </div>
-          <button><a href="https://github.com/SaiSahithPolimera/File-Nest">Feedback</a></button>
+          <button>
+            <a href="https://github.com/SaiSahithPolimera/File-Nest">Feedback</a>
+          </button>
         </nav>
         <section>
           <ul>
             <li>
-              <% let fileUploadAction = "";%>
-              <% if (locals.folderName)  { fileUploadAction = `/dashboard/${folderName.split(" ").join("-")}` }  else {  fileUploadAction = "/dashboard" }   %>
+              <% let fileUploadAction = ""; %>
+              <% if (locals.folderName) {
+                   fileUploadAction = `/dashboard/${folderName.split(" ").join("-")}`
+                 } else {
+                   fileUploadAction = "/dashboard"
+                 }
+              %>
               <form
                 action="<%= fileUploadAction %>"
                 method="POST"
@@ -80,39 +99,44 @@
                 autocomplete="off"
                 enctype="multipart/form-data"
               >
-              <input name="folderName" value="<% if(locals.folderName)  { %><%= folderName.split(" ").join("-") %><% } %>" hidden>
+                <input
+                  name="folderName"
+                  value="<% if(locals.folderName) { %><%= folderName.split(" ").join("-") %><% } %>"
+                  hidden
+                >
                 <input
                   type="file"
                   name="fileName"
                   id="fileInput"
                   value=""
                   style="display: none"
-                /><button type="button" id="uploadButton">Upload File</button>
+                />
+                <button type="button" id="uploadButton">Upload File</button>
               </form>
             </li>
             <li><button id="newFolderButton">New Folder</button></li>
           </ul>
           <dialog class="folderNameDialog">
-          <% let parentFolderID = ""; if(locals.folderID) { parentFolderID = folderID } %>
-            <form method="GET" action="/dashboard/new/<%= parentFolderID %>" name="parentFolderID" class="newFolderForm" id="newFolderForm"> 
-                <button id="closeButton">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="1em"
-                    height="1em"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fill="white"
-                      fill-rule="evenodd"
-                      d="M6.793 6.793a1 1 0 0 1 1.414 0L12 10.586l3.793-3.793a1 1 0 1 1 1.414 1.414L13.414 12l3.793 3.793a1 1 0 0 1-1.414 1.414L12 13.414l-3.793 3.793a1 1 0 0 1-1.414-1.414L10.586 12L6.793 8.207a1 1 0 0 1 0-1.414"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </button>
-                <input type="text" placeholder="Folder name" id="folderName" name="folderName" />
-                <button id="folderNameSubmitButton">Submit</button>
-              </form>
+            <% let parentFolderID = ""; if(locals.folderID) { parentFolderID = folderID } %>
+            <form method="GET" action="/dashboard/new/<%= parentFolderID %>" name="parentFolderID" class="newFolderForm" id="newFolderForm">
+              <button id="closeButton">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1em"
+                  height="1em"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="white"
+                    fill-rule="evenodd"
+                    d="M6.793 6.793a1 1 0 0 1 1.414 0L12 10.586l3.793-3.793a1 1 0 1 1 1.414 1.414L13.414 12l3.793 3.793a1 1 0 0 1-1.414 1.414L12 13.414l-3.793 3.793a1 1 0 0 1-1.414-1.414L10.586 12L6.793 8.207a1 1 0 0 1 0-1.414"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </button>
+              <input type="text" placeholder="Folder name" id="folderName" name="folderName" />
+              <button id="folderNameSubmitButton">Submit</button>
+            </form>
           </dialog>
           <table>
             <thead>
@@ -123,77 +147,170 @@
               </tr>
             </thead>
             <tbody>
-              <% if(locals.filesData) {%> <%for(let i = 0; i < filesData.length;
-              i++) {
-                %>
-              <tr>
-                <td><%= filesData[i].file_name %></td>
-                <td><%= filesData[i].file_size %></td>
-                <td>
-                  <ul id="optionContainer">
-                    <li>
-                      <form action="/dashboard/download" method="GET">
-                        <button
-                          type="submit"
-                          name="path"
-                          id="downloadButton"
-                          value=<%= filesData[i].path %>
+              <% if(locals.filesData) { %>
+                <% for(let i = 0; i < filesData.length; i++) { %>
+                  <tr>
+                    <td><%= filesData[i].file_name %></td>
+                    <td><%= filesData[i].file_size %></td>
+                    <td>
+                      <ul id="optionContainer">
+                        <li>
+                          <form action="/dashboard/download" method="GET">
+                            <button
+                              type="submit"
+                              name="path"
+                              id="downloadButton"
+                              value=<%= filesData[i].path %>
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="2em"
+                                height="2em"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  fill="none"
+                                  stroke="white"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="1.5"
+                                  d="M6 20h12m-6-4V4m4 8s-2.946 4-4 4s-4-4-4-4"
+                                  color="white"
+                                />
+                              </svg>
+                            </button>
+                          </form>
+                        </li>
+                        <li>
+                          <form action="/dashboard/delete" method="POST">
+                            <button
+                              type="submit"
+                              name="path"
+                              id="deleteButton"
+                              value=<%= filesData[i].path %>
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="2em"
+                                height="2em"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  fill="none"
+                                  stroke="white"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="1.5"
+                                  d="m19.5 5.5l-.62 10.025c-.158 2.561-.237 3.842-.88 4.763a4 4 0 0 1-1.2 1.128c-.957.584-2.24.584-4.806.584c-2.57 0-3.855 0-4.814-.585a4 4 0 0 1-1.2-1.13c-.642-.922-.72-2.205-.874-4.77L4.5 5.5M3 5.5h18m-4.944 0l-.683-1.408c-.453-.936-.68-1.403-1.071-1.695a2 2 0 0 0-.275-.172C13.594 2 13.074 2 12.035 2c-1.066 0-1.599 0-2.04.234a2 2 0 0 0-.278.18c-.395.303-.616.788-1.058 1.757L8.053 5.5m1.447 11v-6m5 6v-6"
+                                  color="white"
+                                />
+                              </svg>
+                            </button>
+                          </form>
+                        </li>
+                        <li>
+                          <button
+                            class="shareButton"
+                            data-path="<%= filesData[i].path %>"
+                            data-dialog="dialog-<%= i %>"
                           >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="2em"
+                              height="2em"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                fill="none"
+                                stroke="#fdf4f4"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="1.5"
+                                d="M13 4v4C6.425 9.028 3.98 14.788 3 20c-.037.206 5.384-5.962 10-6v4l8-7z"
+                              />
+                            </svg>
+                          </button>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                  <dialog class="share-options" id="dialog-<%= i %>">
+                    <form>
+                      <span>
+                        Select the expiration duration of the link
+                        <button class="close-options" type="button">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            width="2em"
-                            height="2em"
+                            width="1.2em"
+                            height="1.2em"
                             viewBox="0 0 24 24"
                           >
                             <path
-                              fill="none"
-                              stroke="white"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="1.5"
-                              d="M6 20h12m-6-4V4m4 8s-2.946 4-4 4s-4-4-4-4"
-                              color="white"
+                              fill="white"
+                              fill-rule="evenodd"
+                              d="M6.793 6.793a1 1 0 0 1 1.414 0L12 10.586l3.793-3.793a1 1 0 1 1 1.414 1.414L13.414 12l3.793 3.793a1 1 0 0 1-1.414 1.414L12 13.414l-3.793 3.793a1 1 0 0 1-1.414-1.414L10.586 12L6.793 8.207a1 1 0 0 1 0-1.414"
+                              clip-rule="evenodd"
                             />
                           </svg>
                         </button>
-                      </form>
-                    </li>
-                    <li>
-                      <form action="/dashboard/delete" method="POST">
-                        <button
-                          type="submit"
-                          name="path"
-                          id="deleteButton"
-                          value=<%= filesData[i].path %>
+                      </span>
+                      <ul>
+                        <li>
+                          <button
+                            class="durationButton"
+                            type="button"
+                            data-path="<%= filesData[i].path %>"
+                            data-duration="1D"
                           >
+                            1D
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            class="durationButton"
+                            type="button"
+                            data-path="<%= filesData[i].path %>"
+                            data-duration="3D"
+                          >
+                            3D
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            class="durationButton"
+                            type="button"
+                            data-path="<%= filesData[i].path %>"
+                            data-duration="7D"
+                          >
+                            7D
+                          </button>
+                        </li>
+                      </ul>
+                      <div>
+                        <span class="linkContainer">Your link will appear here</span>
+                        <button class="copyButton" type="button">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            width="2em"
-                            height="2em"
+                            width="1em"
+                            height="1em"
                             viewBox="0 0 24 24"
                           >
-                            <path
-                              fill="none"
-                              stroke="white"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="1.5"
-                              d="m19.5 5.5l-.62 10.025c-.158 2.561-.237 3.842-.88 4.763a4 4 0 0 1-1.2 1.128c-.957.584-2.24.584-4.806.584c-2.57 0-3.855 0-4.814-.585a4 4 0 0 1-1.2-1.13c-.642-.922-.72-2.205-.874-4.77L4.5 5.5M3 5.5h18m-4.944 0l-.683-1.408c-.453-.936-.68-1.403-1.071-1.695a2 2 0 0 0-.275-.172C13.594 2 13.074 2 12.035 2c-1.066 0-1.599 0-2.04.234a2 2 0 0 0-.278.18c-.395.303-.616.788-1.058 1.757L8.053 5.5m1.447 11v-6m5 6v-6"
-                              color="white"
-                            />
+                            <g fill="none" stroke="#fdf4f4" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+                              <path d="M18.327 7.286h-8.044a1.93 1.93 0 0 0-1.925 1.938v10.088c0 1.07.862 1.938 1.925 1.938h8.044a1.93 1.93 0 0 0 1.925-1.938V9.224c0-1.07-.862-1.938-1.925-1.938"></path>
+                              <path d="M15.642 7.286V4.688c0-.514-.203-1.007-.564-1.37a1.92 1.92 0 0 0-1.361-.568H5.673c-.51 0-1 .204-1.36.568a1.95 1.95 0 0 0-.565 1.37v10.088c0 .514.203 1.007.564 1.37s.85.568 1.361.568h2.685"></path>
+                            </g>
                           </svg>
                         </button>
-                      </form>
-                    </li>
-                  </ul>
-                </td>
-              </tr>
-              <%}}%>
+                      </div>
+                    </form>
+                  </dialog>
+                <% } %>
+              <% } %>
             </tbody>
           </table>
           <% if(locals.error) { %>
             <span><%= error %></span>
-            <% }%>
+          <% } %>
         </section>
       </main>
     </section>
@@ -202,52 +319,96 @@
     const fileInput = document.getElementById("fileInput");
     const uploadButton = document.getElementById("uploadButton");
     const uploadForm = document.getElementById("uploadForm");
-    const dialog = document.querySelector("dialog");
+
     const newFolder = document.getElementById("newFolderButton");
     const newFolderForm = document.getElementById("newFolderForm");
     const folderName = document.getElementById("folderName");
+    const dialog = document.querySelector("dialog");
+
     const sideBarToggle = document.getElementById("sideBarToggle");
     const sidebarClose = document.getElementById("sidebarClose");
     const folderContainer = document.getElementById("folderContainer");
-    sideBarToggle.addEventListener("click", () => {
-      if(getComputedStyle(folderContainer).display === "block") {
-        folderContainer.style.display ="none"
-      }
-      else  {
-        folderContainer.style.display = "block"
-        folderContainer.style.position = "absolute"
-        folderContainer.style.width = "100%"
-        folderContainer.style.background = "#000"
-      }
+
+    newFolder.addEventListener("click", () => {
+      dialog.showModal();
     });
-    sidebarClose.addEventListener("click" , () => {
-      if(getComputedStyle(folderContainer).display === "block") {
-        folderContainer.style.display ="none";
-      }
-    })
-    folderName.addEventListener("keypress" , (e) => {
+    const closeButton = document.getElementById("closeButton");
+    closeButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      dialog.close();
+    });
+    folderName.addEventListener("keypress", (e) => {
       if(e.key.toLowerCase() === "enter") {
         newFolderForm.submit();
       }
-    })
-    const closeButton = document.getElementById("closeButton");
-    closeButton.addEventListener("click", (e) => {
-      e.preventDefault();dialog.style.animation = "popup-close 0.7s";
-      dialog.close();
-    });
-      newFolder.addEventListener("click", () => {
-      dialog.showModal();
     });
 
     uploadButton.addEventListener("click", () => {
       fileInput.click();
       fileInput.addEventListener("change", (e) => {
         e.preventDefault();
-        if (e.target.files.length > 0) {
+        if(e.target.files.length > 0) {
           uploadForm.submit();
         }
       });
-      fileInput.removeEventListener("change", true);
+      fileInput.removeEventListener("change", fileInput, true);
+    });
+
+    sideBarToggle.addEventListener("click", () => {
+      if(getComputedStyle(folderContainer).display === "block") {
+        folderContainer.style.display ="none";
+      } else {
+        folderContainer.style.display = "block";
+        folderContainer.style.position = "absolute";
+        folderContainer.style.width = "100%";
+        folderContainer.style.background = "#000";
+      }
+    });
+    sidebarClose.addEventListener("click", () => {
+      if(getComputedStyle(folderContainer).display === "block") {
+        folderContainer.style.display ="none";
+      }
+    });
+
+    document.querySelectorAll(".shareButton").forEach((shareBtn) => {
+      const dialogId = shareBtn.dataset.dialog;
+      const path = shareBtn.dataset.path;
+      const shareDlg = document.getElementById(dialogId);
+
+      shareBtn.addEventListener("click", () => {
+        shareDlg.showModal();
+      });
+
+      shareDlg.querySelector(".close-options").addEventListener("click", () => {
+        shareDlg.close();
+      });
+
+      shareDlg.querySelectorAll(".durationButton").forEach((durationBtn) => {
+        durationBtn.addEventListener("click", async (e) => {
+          e.preventDefault();
+          const duration = durationBtn.dataset.duration;
+          const curPath = durationBtn.dataset.path;
+          const linkSpan = shareDlg.querySelector(".linkContainer");
+
+          try {
+            const res = await fetch(`<%= process.env.API_BASE_URL %>/dashboard/share`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ expireDuration: duration, path: curPath })
+            });
+            const data = await res.json();
+            linkSpan.textContent = data.link || data.message;
+          } catch(err) {
+            linkSpan.textContent = "Error generating link";
+          }
+        });
+      });
+
+      shareDlg.querySelector(".copyButton").addEventListener("click", () => {
+        const link = shareDlg.querySelector(".linkContainer").textContent;
+        navigator.clipboard.writeText(link);
+        alert("Link copied to your clipboard");
+      });
     });
   </script>
 </html>

@@ -380,6 +380,11 @@ main img {
   color: rgb(236, 233, 233);
 }
 
+#optionContainer {
+  display: flex;
+  align-items: center;
+}
+
 #optionContainer button {
   display: flex;
   padding: 5px;
@@ -408,6 +413,10 @@ form.newFolderForm #closeButton {
   padding: 4px;
 }
 
+form.newFolderForm #closeButton:hover {
+  cursor: pointer;
+}
+
 input#folderName {
   background-color: #cac4c469;
 }
@@ -429,6 +438,70 @@ input#folderName {
 #folder-data li a {
   justify-self: center;
   background: #000;
+}
+
+.share-options {
+  position: absolute;
+  top: 40%;
+  left: 40%;
+  /* overflow: hidden; */
+  padding: 12px 25px;
+  border-radius: 25px;
+}
+
+.share-options div {
+  background: #363535;
+  width: 100%;
+  font-size: 1rem;
+  padding: 12px;
+  color: white;
+  border: solid 1px gray;
+  border-radius: 12px;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.linkContainer {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 260px;
+}
+
+.share-options div button {
+  background: none;
+}
+
+.share-options span {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.share-options div button:hover {
+  cursor: pointer;
+}
+
+.close-options svg {
+  background: red;
+  padding: 1px;
+  border-radius: 50%;
+}
+
+.share-options ul {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  justify-content: center;
+}
+
+dialog::backdrop {
+  background: #00000070;
+}
+
+.close-options:hover {
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {
@@ -512,5 +585,11 @@ input#folderName {
     top: 30%;
     left: 23%;
     border-radius: 25px;
+  }
+
+  .share-options {
+    position: absolute;
+    top: 30%;
+    left: 10%;
   }
 }

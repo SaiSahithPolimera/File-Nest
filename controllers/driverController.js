@@ -18,6 +18,41 @@ const checkFileType = (file, cb) => {
   }
 };
 
+exports.shareFileHandler = async (req, res) => {
+  const { path, expireDuration } = req.body;
+
+  const duration = Number(expireDuration.split("D")[0]) * 1440;
+
+  const { data, error } = await supabase.storage.from("File-Nest").getPublicUrl(path)
+  if (error) {
+    console.error(error)
+    res.json({
+      message:
+        "Error accessing storage!"
+    });
+  }
+  if (data.publicUrl) {
+    res.json({
+      link: data.publicUrl
+    })
+  }
+  else {
+    const { data, error } = await supabase.storage.from("File-Nest").createSignedUploadUrl(path, duration)
+    if (error) {
+      console.error(error)
+      res.json({
+        message:
+          "Error accessing storage!"
+      });
+    }
+    if (data.signedUrl) {
+      res.json({
+        link: data.signedUrl
+      })
+    }
+  }
+}
+
 const fileFilter = (req, file, cb) => {
   checkFileType(file, cb);
 };
@@ -62,7 +97,7 @@ exports.fileUploadPost = [
 
 exports.newFolderGet = async (req, res) => {
   const folderName = req.params.folderName;
-  const userID = req.session.passport.user;  
+  const userID = req.session.passport.user;
   const folderID = await db.getFolderIDByName(folderName, userID);
   const filesData = await db.getFilesFromFolder(folderID);
   const subFolders = await db.getSubFolders(folderID, userID);
@@ -113,8 +148,6 @@ const deleteFiles = async (files) => {
       .from("File-Nest")
       .remove([file.path])
       .then(async (res) => {
-        console.log("response");
-        console.log(res)  ;
         await db.deleteFile(file.file_id);
       })
       .catch((err) => {
@@ -230,7 +263,7 @@ exports.newFolderCreateGet = async (req, res) => {
   if (error) {
     console.log("Error creating new folder");
     console.error(error);
-  } else if(parentFolderID){
+  } else if (parentFolderID) {
     await db.createNewFolder(
       updatedFolderName,
       userID,

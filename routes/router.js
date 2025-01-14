@@ -20,6 +20,7 @@ router.post("/dashboard/delete", driverController.deleteFilePost);
 router.get("/dashboard/download", driverController.downloadFileGet);
 router.get("/dashboard/new", driverController.newFolderCreateGet);
 router.get("/dashboard/new/:parentFolderID", driverController.newFolderCreateGet);
+router.post("/dashboard/share", driverController.shareFileHandler)
 router.get("/dashboard/:folderName", driverController.newFolderGet);
 router.post("/dashboard/:folderName", driverController.newFolderPost);
 router.get("/dashboard/delete/:folderName", driverController.deleteFolderGet);
