@@ -6,6 +6,7 @@ const path = require("node:path");
 const assetPath = path.join(__dirname, "/public");
 const router = require("./routes/router");
 const passport = require("./config/passport");
+const cors = require("cors");
 require("dotenv").config();
 const app = express();
 app.use(express.static(assetPath));
@@ -32,8 +33,13 @@ app.use(
 );
 
 app.use(passport.session());
+app.use(
+  cors({
+    origin: process.env.APT_BASE_URL,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+  })
+);
 app.use(router);
 
-const PORT = process.env.PORT || 3001 ;
-
-app.listen(PORT, () => console.log(`File-Nest running on PORT: ${PORT}`));
+module.exports = app;
